@@ -32,6 +32,9 @@ build_script:
   - cmd: CI\build.cmd
 
 after_build:
+  - if not exist "OBS-Studio-21.0.1-Small.zip" appveyor DownloadFile "https://github.com/jp9000/obs-studio/releases/download/21.0.1/OBS-Studio-21.0.1-Small.zip"
+  - 7z x "OBS-Studio-21.0.1-Small.zip" -oobs-studio-jp9000
+  - robocopy "obs-studio-jp9000\data\obs-plugins\win-capture" "%InstallPath%\data\obs-plugins\win-capture"
   - 7z a "%ReleaseArtifact%" "%InstallPath%\*"
 
 artifacts:
@@ -41,6 +44,7 @@ artifacts:
 test: off
 
 cache:
+  - OBS-Studio-21.0.1-Small.zip
   - dependencies2015.zip
   - AMF.zip
   - build32\CMakeCache.txt
